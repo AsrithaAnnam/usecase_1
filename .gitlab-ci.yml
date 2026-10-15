@@ -1,0 +1,16 @@
+cat > .gitlab-ci.yml <<'EOF'
+image: alpine:3.22
+
+stages:
+  - test
+
+check_project:
+  stage: test
+  script:
+    - echo "GitLab pipeline started successfully"
+    - ls -la
+    - test -d frontend
+    - test -d backend
+    - test -d database
+    - echo "All application folders are present"
+EOF
