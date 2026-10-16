@@ -1,5 +1,3 @@
-cat > .gitlab-ci.yml <<'EOF'
-image: alpine:3.22
 
 stages:
   - test
@@ -13,4 +11,3 @@ check_project:
     - test -d backend
     - test -d database
     - echo "All application folders are present"
-EOF
