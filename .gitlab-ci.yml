@@ -2,12 +2,11 @@
 stages:
   - test
 
-check_project:
+unit_tests:
   stage: test
+  image: python:3.12
+  before_script:
+    - python --version
+    - pip install Flask Flask-Cors psycopg2-binary Werkzeug pytest
   script:
-    - echo "GitLab pipeline started successfully"
-    - ls -la
-    - test -d frontend
-    - test -d backend
-    - test -d database
-    - echo "All application folders are present"
+    - python -m pytest backend/tests -v
