@@ -6,6 +6,7 @@ stages:
   - sonarqube
   - build_scan_push
 
+
 unit_tests:
   stage: test
   tags:
@@ -13,9 +14,14 @@ unit_tests:
   before_script:
     - python --version
     - pip install -r backend/requirements.txt
-    - pip install pytest
+    - pip install pytest pytest-cov
   script:
-    - python -m pytest backend/tests -v
+    - python -m pytest backend/tests -v --cov=backend.app --cov-report=xml:coverage.xml
+  artifacts:
+    paths:
+      - coverage.xml
+    expire_in: 1 day
+
 
 sonarqube_check:
   stage: sonarqube
@@ -32,7 +38,7 @@ sonarqube_check:
     paths:
       - .sonar/cache
   script:
-    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
+    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}" -Dsonar.python.coverage.reportPaths=coverage.xml
   allow_failure: false
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
