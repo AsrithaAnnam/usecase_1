@@ -1,18 +1,16 @@
 
-image: alpine:3.22
+image: python:3.12
 
 stages:
   - test
 
-check_project:
+unit_tests:
   stage: test
   tags:
     - docker
+  before_script:
+    - python --version
+    - pip install -r backend/requirements.txt
+    - pip install pytest
   script:
-    - echo "GitLab pipeline started successfully"
-    - pwd
-    - ls -la
-    - test -d frontend
-    - test -d backend
-    - test -d database
-    - echo "All application folders are present"
+    - python -m pytest backend/tests -v
