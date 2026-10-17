@@ -7,12 +7,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 CORS(app)
 
+import os
+
 DB_CONFIG = {
-    "host": "localhost",
-    "database": "claimsdb",
-    "user": "claimsuser",
-    "password": "claimspassword",
-    "port": 5432
+    "host": os.getenv("DB_HOST", "localhost"),
+    "database": os.getenv("DB_NAME", "claimsdb"),
+    "user": os.getenv("DB_USER", "claimsuser"),
+    "password": os.getenv("DB_PASSWORD", ""),
+    "port": int(os.getenv("DB_PORT", "5432"))
 }
 
 
@@ -240,4 +242,8 @@ def login():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+ app.run(
+    host="0.0.0.0",
+    port=5000,
+    debug=os.getenv("FLASK_DEBUG", "0") == "1"
+)

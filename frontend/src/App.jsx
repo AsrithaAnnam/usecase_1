@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-const API = "http://localhost:5000/api";
+const API = "/api";
 
 function App() {
     const [page, setPage] = useState("home");

@@ -4,6 +4,7 @@ image: python:3.12
 stages:
   - test
   - sonarqube
+  - build_scan_push
 
 unit_tests:
   stage: test
@@ -33,5 +34,43 @@ sonarqube_check:
   script:
     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
   allow_failure: false
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+container_build_scan_push:
+  stage: build_scan_push
+  image:
+    name: docker:27-cli
+    entrypoint: [""]
+  tags:
+    - docker
+  variables:
+    BACKEND_IMAGE: "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHA}"
+    FRONTEND_IMAGE: "${CI_REGISTRY_IMAGE}/frontend:${CI_COMMIT_SHA}"
+  before_script:
+    - docker version
+    - printf '%s' "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+  script:
+    # Build the backend image
+    - docker build -t "$BACKEND_IMAGE" -f backend/Dockerfile backend
+
+    # Build the frontend image
+    - docker build -t "$FRONTEND_IMAGE" -f frontend/Dockerfile frontend
+
+    # Scan the backend image for High and Critical vulnerabilities
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --no-progress "$BACKEND_IMAGE"
+
+    # Scan the frontend image for High and Critical vulnerabilities
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --no-progress "$FRONTEND_IMAGE"
+
+    # Push images only after both scans pass
+    - docker push "$BACKEND_IMAGE"
+    - docker push "$FRONTEND_IMAGE"
+
+    # Also publish latest tags from the main branch
+    - docker tag "$BACKEND_IMAGE" "${CI_REGISTRY_IMAGE}/backend:latest"
+    - docker tag "$FRONTEND_IMAGE" "${CI_REGISTRY_IMAGE}/frontend:latest"
+    - docker push "${CI_REGISTRY_IMAGE}/backend:latest"
+    - docker push "${CI_REGISTRY_IMAGE}/frontend:latest"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
