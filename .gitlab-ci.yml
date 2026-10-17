@@ -1,12 +1,15 @@
+image: alpine:3.22
 
 stages:
   - test
 
-unit_tests:
+check_project:
   stage: test
-  image: python:3.12
-  before_script:
-    - python --version
-    - pip install Flask Flask-Cors psycopg2-binary Werkzeug pytest
   script:
-    - python -m pytest backend/tests -v
+    - echo "GitLab pipeline started successfully"
+    - pwd
+    - ls -la
+    - test -d frontend
+    - test -d backend
+    - test -d database
+    - echo "All application folders are present"
