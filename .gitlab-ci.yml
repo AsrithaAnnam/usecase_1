@@ -1,3 +1,4 @@
+
 image: alpine:3.22
 
 stages:
@@ -5,6 +6,8 @@ stages:
 
 check_project:
   stage: test
+  tags:
+    - docker
   script:
     - echo "GitLab pipeline started successfully"
     - pwd
