@@ -1,11 +1,10 @@
-
+```yaml
 image: python:3.12
 
 stages:
   - test
   - sonarqube
   - build_scan_push
-
 
 unit_tests:
   stage: test
@@ -21,8 +20,6 @@ unit_tests:
     paths:
       - coverage.xml
     expire_in: 1 day
-
-
 
 sonarqube_check:
   stage: sonarqube
@@ -68,10 +65,10 @@ container_build_scan_push:
     - docker build -t "$FRONTEND_IMAGE" -f frontend/Dockerfile frontend
 
     # Scan the backend image for High and Critical vulnerabilities
-    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --no-progress "$BACKEND_IMAGE"
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --db-repository registry.gitlab.com/gitlab-org/security-products/dependencies/trivy-db --db-repository ghcr.io/aquasecurity/trivy-db:2 --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --no-progress "$BACKEND_IMAGE"
 
     # Scan the frontend image for High and Critical vulnerabilities
-    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --no-progress "$FRONTEND_IMAGE"
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --db-repository registry.gitlab.com/gitlab-org/security-products/dependencies/trivy-db --db-repository ghcr.io/aquasecurity/trivy-db:2 --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --no-progress "$FRONTEND_IMAGE"
 
     # Push images only after both scans pass
     - docker push "$BACKEND_IMAGE"
