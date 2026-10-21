@@ -81,3 +81,4 @@ container_build_scan_push:
     - docker push "${CI_REGISTRY_IMAGE}/frontend:latest"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+```
