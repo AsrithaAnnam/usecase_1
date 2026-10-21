@@ -1,5 +1,7 @@
 
-FROM python:3.12-slim
+FROM python:3.12-slim-bookworm
+
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -21,4 +23,4 @@ USER appuser
 
 EXPOSE 5000
 
-CMD ["python", "app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "app:app"]
