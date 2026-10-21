@@ -23,6 +23,7 @@ unit_tests:
     expire_in: 1 day
 
 
+
 sonarqube_check:
   stage: sonarqube
   image:
@@ -30,6 +31,9 @@ sonarqube_check:
     entrypoint: [""]
   tags:
     - docker
+  needs:
+    - job: unit_tests
+      artifacts: true
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
     GIT_DEPTH: "0"
