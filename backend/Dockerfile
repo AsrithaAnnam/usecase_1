@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN useradd --create-home --shell /usr/sbin/nologin appuser
 
 # Copy application code and assign ownership
-COPY --chown=appuser:appuser app.py .
+COPY --chown=appuser:appuser --chmod=0444 app.py .
 
 # Run the application without root privileges
 USER appuser
