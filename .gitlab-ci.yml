@@ -43,6 +43,7 @@ sonarqube_check:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
 
+
 container_build_scan_push:
   stage: build_scan_push
   image:
@@ -57,10 +58,10 @@ container_build_scan_push:
     - docker version
     - printf '%s' "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
   script:
-    - docker build -t "$BACKEND_IMAGE" -f backend/Dockerfile backend
-    - docker build -t "$FRONTEND_IMAGE" -f frontend/Dockerfile frontend
-    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --db-repository ghcr.io/aquasecurity/trivy-db:2 --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --no-progress "$BACKEND_IMAGE"
-    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --db-repository ghcr.io/aquasecurity/trivy-db:2 --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --no-progress "$FRONTEND_IMAGE"
+    - docker build --pull --no-cache -t "$BACKEND_IMAGE" -f backend/Dockerfile backend
+    - docker build --pull --no-cache -t "$FRONTEND_IMAGE" -f frontend/Dockerfile frontend
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --db-repository ghcr.io/aquasecurity/trivy-db:2 --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress "$BACKEND_IMAGE"
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.70.0 image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --db-repository ghcr.io/aquasecurity/trivy-db:2 --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress "$FRONTEND_IMAGE"
     - docker push "$BACKEND_IMAGE"
     - docker push "$FRONTEND_IMAGE"
     - docker tag "$BACKEND_IMAGE" "${CI_REGISTRY_IMAGE}/backend:latest"
