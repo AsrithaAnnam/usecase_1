@@ -1,4 +1,7 @@
 
+import psycopg2
+from werkzeug.security import generate_password_hash
+
 from unittest.mock import MagicMock, patch
 
 from backend.app import app
@@ -105,3 +108,177 @@ def test_login_invalid_json():
         "/api/login", data="invalid", content_type="application/json"
     )
     assert response.status_code == 400
+
+def test_create_claim_database_error():
+    with patch(
+        "backend.app.get_db",
+        side_effect=psycopg2.OperationalError("DB error")
+    ):
+        response = client().post(
+            "/api/claims",
+            json={"customer_name": "Ravi", "amount": 100}
+        )
+    assert response.status_code == 500
+
+
+def test_create_claim_missing_customer_name():
+    response = client().post(
+        "/api/claims",
+        json={"amount": 100}
+    )
+    assert response.status_code == 400
+
+
+def test_update_claim_invalid_json():
+    response = client().put(
+        "/api/claims/1",
+        data="invalid",
+        content_type="application/json"
+    )
+    assert response.status_code == 400
+
+
+def test_update_claim_success():
+    conn = mock_database(
+        row={"id": 1, "status": "Approved", "customer_name": "Ravi"}
+    )
+    with patch("backend.app.get_db", return_value=conn):
+        response = client().put(
+            "/api/claims/1",
+            json={"status": "Approved"}
+        )
+    assert response.status_code == 200
+    assert response.get_json()["status"] == "Approved"
+
+
+def test_update_claim_database_error():
+    with patch(
+        "backend.app.get_db",
+        side_effect=psycopg2.OperationalError("DB error")
+    ):
+        response = client().put(
+            "/api/claims/1",
+            json={"status": "Approved"}
+        )
+    assert response.status_code == 500
+
+
+def test_register_success():
+    conn = mock_database(
+        row={"id": 1, "name": "Ravi", "email": "ravi@example.com"}
+    )
+    with patch("backend.app.get_db", return_value=conn):
+        response = client().post(
+            "/api/register",
+            json={
+                "name": "Ravi",
+                "email": "ravi@example.com",
+                "password": "TestPassword123!"
+            }
+        )
+    assert response.status_code == 201
+    assert response.get_json()["email"] == "ravi@example.com"
+
+
+def test_register_duplicate_email():
+    conn = mock_database()
+    conn.cursor.return_value.__enter__.return_value.execute.side_effect = (
+        psycopg2.errors.UniqueViolation("duplicate email")
+    )
+    with patch("backend.app.get_db", return_value=conn):
+        response = client().post(
+            "/api/register",
+            json={
+                "name": "Ravi",
+                "email": "ravi@example.com",
+                "password": "TestPassword123!"
+            }
+        )
+    assert response.status_code == 409
+
+
+def test_register_database_error():
+    with patch(
+        "backend.app.get_db",
+        side_effect=psycopg2.OperationalError("DB error")
+    ):
+        response = client().post(
+            "/api/register",
+            json={
+                "name": "Ravi",
+                "email": "ravi@example.com",
+                "password": "TestPassword123!"
+            }
+        )
+    assert response.status_code == 500
+
+
+def test_login_user_not_found():
+    conn = mock_database(row=None)
+    with patch("backend.app.get_db", return_value=conn):
+        response = client().post(
+            "/api/login",
+            json={
+                "email": "unknown@example.com",
+                "password": "TestPassword123!"
+            }
+        )
+    assert response.status_code == 401
+
+
+def test_login_wrong_password():
+    conn = mock_database(
+        row={
+            "id": 1,
+            "name": "Ravi",
+            "email": "ravi@example.com",
+            "password_hash": generate_password_hash("CorrectPassword123!")
+        }
+    )
+    with patch("backend.app.get_db", return_value=conn):
+        response = client().post(
+            "/api/login",
+            json={
+                "email": "ravi@example.com",
+                "password": "WrongPassword123!"
+            }
+        )
+    assert response.status_code == 401
+
+
+def test_login_success():
+    conn = mock_database(
+        row={
+            "id": 1,
+            "name": "Ravi",
+            "email": "ravi@example.com",
+            "password_hash": generate_password_hash("TestPassword123!")
+        }
+    )
+    with patch("backend.app.get_db", return_value=conn):
+        response = client().post(
+            "/api/login",
+            json={
+                "email": "ravi@example.com",
+                "password": "TestPassword123!"
+            }
+        )
+    assert response.status_code == 200
+    assert response.get_json()["message"] == "Login successful"
+    assert response.get_json()["user"]["name"] == "Ravi"
+
+
+def test_login_database_error():
+    with patch(
+        "backend.app.get_db",
+        side_effect=psycopg2.OperationalError("DB error")
+    ):
+        response = client().post(
+            "/api/login",
+            json={
+                "email": "ravi@example.com",
+                "password": "TestPassword123!"
+            }
+        )
+    assert response.status_code == 500
+
