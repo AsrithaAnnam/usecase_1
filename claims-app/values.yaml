@@ -1,0 +1,21 @@
+imagePullSecrets:
+  - name: gitlab-registry
+
+backend:
+  repository: registry.gitlab.com/asrithaannam/usecase_1/backend
+  digest: sha256:9475d75b0e0a2e69ca16bc4b9e824517ca087cf92adad05bc4f283b3b1e84c90
+  replicas: 1
+  port: 5000
+
+frontend:
+  repository: registry.gitlab.com/asrithaannam/usecase_1/frontend
+  digest: sha256:cc841773f8da08f77ab9474e3ee22e7a4d5d990aeb14fc16173d5ec1078f0ead
+  replicas: 1
+  port: 80
+
+database:
+  image: postgres:17-alpine
+  name: claimsdb
+  username: claimsuser
+  existingSecret: claims-db-secret
+  storage: 1Gi
