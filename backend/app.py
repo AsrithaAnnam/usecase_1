@@ -12,7 +12,7 @@ app = Flask(__name__)
 # Allow browser requests only from the configured frontend origin.
 FRONTEND_ORIGIN = os.getenv(
     "FRONTEND_ORIGIN",
-    "http://localhost:8080"
+    "http://localhost:8081"
 )
 
 CORS(
