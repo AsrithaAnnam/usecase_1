@@ -1,5 +1,7 @@
+
 import React, { useEffect, useState } from "react";
-const API = "http://localhost:5000/api";
+
+const API = `${import.meta.env.VITE_API_URL || ""}/api`;
 
 function App() {
     const [page, setPage] = useState("home");
@@ -37,6 +39,8 @@ function App() {
 
             if (response.ok) {
                 setClaims(data);
+            } else {
+                setMessage(data.error || "Unable to load claims");
             }
         } catch {
             setMessage("Unable to connect to backend");
@@ -60,7 +64,7 @@ function App() {
             const data = await response.json();
 
             if (!response.ok) {
-                setMessage(data.error);
+                setMessage(data.error || "Unable to create claim");
                 return;
             }
 
@@ -74,7 +78,6 @@ function App() {
 
             await loadClaims();
             setPage("claims");
-
         } catch {
             setMessage("Unable to connect to backend");
         } finally {
@@ -83,6 +86,8 @@ function App() {
     }
 
     async function updateStatus(id, status) {
+        setMessage("");
+
         try {
             const response = await fetch(`${API}/claims/${id}`, {
                 method: "PUT",
@@ -92,9 +97,15 @@ function App() {
                 body: JSON.stringify({ status })
             });
 
-            if (response.ok) {
-                await loadClaims();
+            const data = await response.json();
+
+            if (!response.ok) {
+                setMessage(data.error || "Unable to update claim");
+                return;
             }
+
+            await loadClaims();
+            setMessage("Claim status updated successfully");
         } catch {
             setMessage("Unable to update claim");
         }
@@ -116,13 +127,13 @@ function App() {
             const data = await response.json();
 
             if (!response.ok) {
-                setMessage(data.error);
+                setMessage(data.error || "Login failed");
                 return;
             }
 
             setMessage(`Welcome ${data.user.name}`);
+            setLoginForm({ email: "", password: "" });
             setPage("home");
-
         } catch {
             setMessage("Unable to connect to backend");
         }
@@ -144,7 +155,7 @@ function App() {
             const data = await response.json();
 
             if (!response.ok) {
-                setMessage(data.error);
+                setMessage(data.error || "Registration failed");
                 return;
             }
 
@@ -157,7 +168,6 @@ function App() {
             });
 
             setPage("login");
-
         } catch {
             setMessage("Unable to connect to backend");
         }
@@ -184,9 +194,8 @@ function App() {
             </header>
 
             <main>
-
                 {message && (
-                    <div className="message">
+                    <div className="message" role="status">
                         {message}
                     </div>
                 )}
@@ -288,6 +297,7 @@ function App() {
                             <label>Claim Amount</label>
                             <input
                                 type="number"
+                                min="0.01"
                                 step="0.01"
                                 value={claimForm.amount}
                                 onChange={e =>
@@ -312,7 +322,11 @@ function App() {
                                 placeholder="Describe the claim"
                             />
 
-                            <button className="primary" type="submit">
+                            <button
+                                className="primary"
+                                type="submit"
+                                disabled={loading}
+                            >
                                 {loading ? "Creating..." : "Submit Claim"}
                             </button>
                         </form>
@@ -431,7 +445,6 @@ function App() {
                         </form>
                     </section>
                 )}
-
             </main>
 
             <footer>
@@ -441,14 +454,9 @@ function App() {
     );
 }
 
-
 function ClaimTable({ claims, updateStatus }) {
     if (claims.length === 0) {
-        return (
-            <div className="empty">
-                No claims available.
-            </div>
-        );
+        return <div className="empty">No claims available.</div>;
     }
 
     return (
@@ -473,12 +481,15 @@ function ClaimTable({ claims, updateStatus }) {
                             <td>${Number(claim.amount).toFixed(2)}</td>
                             <td>{claim.description || "-"}</td>
                             <td>
-                                <span className={`status ${claim.status.toLowerCase()}`}>
+                                <span
+                                    className={`status ${claim.status.toLowerCase()}`}
+                                >
                                     {claim.status}
                                 </span>
                             </td>
                             <td>
                                 <select
+                                    aria-label={`Update status for ${claim.claim_number}`}
                                     value={claim.status}
                                     onChange={e =>
                                         updateStatus(
@@ -487,9 +498,9 @@ function ClaimTable({ claims, updateStatus }) {
                                         )
                                     }
                                 >
-                                    <option>Pending</option>
-                                    <option>Approved</option>
-                                    <option>Rejected</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Rejected">Rejected</option>
                                 </select>
                             </td>
                         </tr>

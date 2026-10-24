@@ -1,6 +1,18 @@
-.DS_Store
+
 node_modules/
 venv/
 __pycache__/
 *.pyc
+
+# Environment variables and secrets
+.env
 backend/.env
+
+# Frontend build output
+frontend/dist/
+
+# Test and coverage files
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/

@@ -1,18 +1,37 @@
+
+import os
+
+import psycopg2
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-CORS(app)
 
+# Allow requests from the configured frontend origin.
+FRONTEND_ORIGIN = os.getenv(
+    "FRONTEND_ORIGIN",
+    "http://localhost:8081"
+)
+
+CORS(
+    app,
+    resources={
+        r"/api/*": {
+            "origins": [FRONTEND_ORIGIN]
+        }
+    }
+)
+
+# Read database settings from environment variables.
+# Defaults support running the backend directly on the host.
 DB_CONFIG = {
-    "host": "localhost",
-    "database": "claimsdb",
-    "user": "claimsuser",
-    "password": "claimspassword",
-    "port": 5432
+    "host": os.getenv("DB_HOST", "localhost"),
+    "database": os.getenv("DB_NAME", "claimsdb"),
+    "user": os.getenv("DB_USER", "claimsuser"),
+    "password": os.getenv("DB_PASSWORD", "claimspassword"),
+    "port": int(os.getenv("DB_PORT", "5432")),
 }
 
 
@@ -20,7 +39,7 @@ def get_db():
     return psycopg2.connect(**DB_CONFIG)
 
 
-@app.route("/api/health")
+@app.route("/api/health", methods=["GET"])
 def health():
     return jsonify({
         "status": "healthy",
@@ -28,8 +47,11 @@ def health():
     })
 
 
-@app.route("/api/claims")
+@app.route("/api/claims", methods=["GET"])
 def get_claims():
+    conn = None
+    cur = None
+
     try:
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -42,67 +64,74 @@ def get_claims():
         """)
 
         claims = cur.fetchall()
-
-        cur.close()
-        conn.close()
-
         return jsonify(claims)
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except psycopg2.Error:
+        app.logger.exception("Database error while retrieving claims")
+        return jsonify({"error": "Unable to retrieve claims"}), 500
+
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
 
 @app.route("/api/claims", methods=["POST"])
 def create_claim():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
 
     customer_name = data.get("customer_name")
     amount = data.get("amount")
     description = data.get("description")
 
-    if not customer_name or not amount:
+    if not customer_name or amount is None or amount == "":
         return jsonify({
             "error": "Customer name and amount are required"
         }), 400
+
+    conn = None
+    cur = None
 
     try:
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
 
         cur.execute("""
-            INSERT INTO claims
-            (customer_name, amount, description)
+            INSERT INTO claims (customer_name, amount, description)
             VALUES (%s, %s, %s)
             RETURNING id, claim_number, customer_name,
                       amount, description, status, created_at
-        """, (
-            customer_name,
-            amount,
-            description
-        ))
+        """, (customer_name, amount, description))
 
         claim = cur.fetchone()
-
         conn.commit()
-
-        cur.close()
-        conn.close()
 
         return jsonify(claim), 201
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except (psycopg2.Error, ValueError):
+        if conn:
+            conn.rollback()
+        app.logger.exception("Error while creating claim")
+        return jsonify({"error": "Unable to create claim"}), 500
+
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
 
 @app.route("/api/claims/<int:claim_id>", methods=["PUT"])
 def update_claim(claim_id):
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
     status = data.get("status")
 
     if status not in ["Pending", "Approved", "Rejected"]:
-        return jsonify({
-            "error": "Invalid status"
-        }), 400
+        return jsonify({"error": "Invalid status"}), 400
+
+    conn = None
+    cur = None
 
     try:
         conn = get_db()
@@ -119,36 +148,37 @@ def update_claim(claim_id):
         claim = cur.fetchone()
 
         if not claim:
-            cur.close()
-            conn.close()
-
-            return jsonify({
-                "error": "Claim not found"
-            }), 404
+            return jsonify({"error": "Claim not found"}), 404
 
         conn.commit()
-
-        cur.close()
-        conn.close()
-
         return jsonify(claim)
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except psycopg2.Error:
+        if conn:
+            conn.rollback()
+        app.logger.exception("Error while updating claim")
+        return jsonify({"error": "Unable to update claim"}), 500
+
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
 
 @app.route("/api/register", methods=["POST"])
 def register():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
 
     name = data.get("name")
     email = data.get("email")
     password = data.get("password")
 
     if not name or not email or not password:
-        return jsonify({
-            "error": "All fields are required"
-        }), 400
+        return jsonify({"error": "All fields are required"}), 400
+
+    conn = None
+    cur = None
 
     try:
         conn = get_db()
@@ -157,41 +187,37 @@ def register():
         password_hash = generate_password_hash(password)
 
         cur.execute("""
-            INSERT INTO users
-            (name, email, password_hash)
+            INSERT INTO users (name, email, password_hash)
             VALUES (%s, %s, %s)
             RETURNING id, name, email
-        """, (
-            name,
-            email,
-            password_hash
-        ))
+        """, (name, email, password_hash))
 
         user = cur.fetchone()
-
         conn.commit()
-
-        cur.close()
-        conn.close()
 
         return jsonify(user), 201
 
     except psycopg2.errors.UniqueViolation:
-        conn.rollback()
-        cur.close()
-        conn.close()
+        if conn:
+            conn.rollback()
+        return jsonify({"error": "Email already registered"}), 409
 
-        return jsonify({
-            "error": "Email already registered"
-        }), 409
+    except psycopg2.Error:
+        if conn:
+            conn.rollback()
+        app.logger.exception("Database error during registration")
+        return jsonify({"error": "Unable to register user"}), 500
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
 
 @app.route("/api/login", methods=["POST"])
 def login():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
 
     email = data.get("email")
     password = data.get("password")
@@ -200,6 +226,9 @@ def login():
         return jsonify({
             "error": "Email and password are required"
         }), 400
+
+    conn = None
+    cur = None
 
     try:
         conn = get_db()
@@ -213,15 +242,9 @@ def login():
 
         user = cur.fetchone()
 
-        cur.close()
-        conn.close()
-
-        if not user:
-            return jsonify({
-                "error": "Invalid email or password"
-            }), 401
-
-        if not check_password_hash(user["password_hash"], password):
+        if not user or not check_password_hash(
+            user["password_hash"], password
+        ):
             return jsonify({
                 "error": "Invalid email or password"
             }), 401
@@ -235,8 +258,15 @@ def login():
             }
         })
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    except psycopg2.Error:
+        app.logger.exception("Database error during login")
+        return jsonify({"error": "Unable to log in"}), 500
+
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
 
 if __name__ == "__main__":
