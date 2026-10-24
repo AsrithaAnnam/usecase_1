@@ -1,0 +1,53 @@
+name: claims-local
+
+services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: claimsdb
+      POSTGRES_USER: claimsuser
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in your environment}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U claimsuser -d claimsdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: database
+      DB_NAME: claimsdb
+      DB_USER: claimsuser
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in your environment}
+      DB_PORT: "5432"
+      FRONTEND_ORIGIN: http://localhost:8081
+    ports:
+      - "${BACKEND_HOST_PORT:-5001}:5001"
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:5001}
+    ports:
+      - "${FRONTEND_HOST_PORT:-8081}:8080"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    external: true
+    name: 3-tier-architecture_postgres_data
