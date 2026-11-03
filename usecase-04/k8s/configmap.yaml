@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: claims-config
+  namespace: claims-k8s-lab
+data:
+  DB_HOST: "claims-db"
+  DB_PORT: "5432"
+  DB_NAME: "claimsdb"
+  DB_USER: "claimsuser"
+  POSTGRES_DB: "claimsdb"
+  POSTGRES_USER: "claimsuser"

@@ -1,0 +1,25 @@
+apiVersion: v1
+data:
+  init.sql: "\r\n-- Create the users table\r\nCREATE TABLE IF NOT EXISTS users (\r\n
+    \   id SERIAL PRIMARY KEY,\r\n    name VARCHAR(100) NOT NULL,\r\n    email VARCHAR(150)
+    UNIQUE NOT NULL,\r\n    password_hash TEXT NOT NULL,\r\n    created_at TIMESTAMP
+    DEFAULT CURRENT_TIMESTAMP\r\n);\r\n\r\n-- Create the claims table\r\nCREATE TABLE
+    IF NOT EXISTS claims (\r\n    id SERIAL PRIMARY KEY,\r\n    claim_number VARCHAR(20)
+    UNIQUE,\r\n    customer_name VARCHAR(100) NOT NULL,\r\n    amount NUMERIC(12,2)
+    NOT NULL,\r\n    description TEXT,\r\n    status VARCHAR(20) DEFAULT 'Pending',\r\n
+    \   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\r\n);\r\n\r\n-- Create the
+    sequence for claim numbers\r\nCREATE SEQUENCE IF NOT EXISTS claim_number_seq START
+    1;\r\n\r\n-- Automatically generate a claim number before inserting a claim\r\nCREATE
+    OR REPLACE FUNCTION generate_claim_number()\r\nRETURNS TRIGGER AS $$\r\nBEGIN\r\n
+    \   NEW.claim_number :=\r\n        'CLM-' || LPAD(nextval('claim_number_seq')::TEXT,
+    4, '0');\r\n    RETURN NEW;\r\nEND;\r\n$$ LANGUAGE plpgsql;\r\n\r\n-- Create the
+    trigger only if it does not already exist\r\nDROP TRIGGER IF EXISTS claim_number_trigger
+    ON claims;\r\n\r\nCREATE TRIGGER claim_number_trigger\r\nBEFORE INSERT ON claims\r\nFOR
+    EACH ROW\r\nWHEN (NEW.claim_number IS NULL)\r\nEXECUTE FUNCTION generate_claim_number();\r\n\r\n--
+    Grant the application user access to the tables and sequence\r\nGRANT ALL PRIVILEGES
+    ON ALL TABLES IN SCHEMA public TO claimsuser;\r\nGRANT ALL PRIVILEGES ON ALL SEQUENCES
+    IN SCHEMA public TO claimsuser;\r\n"
+kind: ConfigMap
+metadata:
+  name: claims-db-init
+  namespace: claims-k8s-lab

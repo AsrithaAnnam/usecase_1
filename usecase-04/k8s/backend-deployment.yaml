@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: claims-backend
+  namespace: claims-k8s-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: claims-backend
+  template:
+    metadata:
+      labels:
+        app: claims-backend
+    spec:
+      imagePullSecrets:
+        - name: gitlab-pull-secret
+      containers:
+        - name: backend
+          image: registry.gitlab.com/asrithaannam/usecase_1/backend@sha256:fde7e187d075c512bda9f2e1fd35ba96caa6ddb07818d7c8a1f548be771dc376
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: claims-config
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: claims-db-secret
+                  key: DB_PASSWORD
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 10

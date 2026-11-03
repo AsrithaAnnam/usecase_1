@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: claims-frontend
+  namespace: claims-k8s-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: claims-frontend
+  template:
+    metadata:
+      labels:
+        app: claims-frontend
+    spec:
+      imagePullSecrets:
+        - name: gitlab-pull-secret
+      containers:
+        - name: frontend
+          image: registry.gitlab.com/asrithaannam/usecase_1/frontend@sha256:146531458cccec9a0683998656bc086cd0e2e6257ca3fb71034aaab6ca1e0712
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
