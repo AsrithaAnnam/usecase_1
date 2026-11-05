@@ -1,0 +1,28 @@
+imagePullSecrets:
+  - name: gitlab-pull-secret
+
+backend:
+  replicas: 1
+  image: registry.gitlab.com/asrithaannam/usecase_1/backend@sha256:fde7e187d075c512bda9f2e1fd35ba96caa6ddb07818d7c8a1f548be771dc376
+  port: 5000
+  healthPath: /api/health
+
+frontend:
+  replicas: 1
+  image: registry.gitlab.com/asrithaannam/usecase_1/frontend@sha256:146531458cccec9a0683998656bc086cd0e2e6257ca3fb71034aaab6ca1e0712
+  port: 8080
+
+database:
+  image: postgres:16-alpine
+  port: 5432
+  name: claimsdb
+  user: claimsuser
+  existingSecret: claims-db-secret
+  passwordKey: DB_PASSWORD
+  storageClass: standard
+  storageSize: 1Gi
+
+ingress:
+  enabled: true
+  className: traefik
+  host: claims-gitops.localhost

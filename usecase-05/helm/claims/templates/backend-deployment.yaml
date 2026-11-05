@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: claims-backend
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: claims-backend
+  template:
+    metadata:
+      labels:
+        app: claims-backend
+    spec:
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      containers:
+        - name: backend
+          image: {{ .Values.backend.image | quote }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ .Values.backend.port }}
+          envFrom:
+            - configMapRef:
+                name: claims-config
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret | quote }}
+                  key: {{ .Values.database.passwordKey | quote }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.backend.healthPath | quote }}
+              port: {{ .Values.backend.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.backend.healthPath | quote }}
+              port: {{ .Values.backend.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 10
