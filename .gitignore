@@ -9,3 +9,11 @@ backend/.env
 .env.*
 !.env.example.coverage
 coverage.xml
+# Terraform generated files
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+terraform.tfvars
+crash.log

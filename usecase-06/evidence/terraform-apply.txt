@@ -1,0 +1,26 @@
+aws_vpc.claims_lab: Creating...
+aws_ecr_repository.claims: Creating...
+aws_ecr_repository.claims: Creation complete after 0s [id=claims-lab]
+aws_vpc.claims_lab: Creation complete after 2s [id=vpc-02556f8c77328c687]
+aws_internet_gateway.claims_lab: Creating...
+aws_route_table.public: Creating...
+aws_subnet.public: Creating...
+aws_security_group.application: Creating...
+aws_route_table.public: Creation complete after 1s [id=rtb-0171bbdf857ab9ebe]
+aws_internet_gateway.claims_lab: Creation complete after 1s [id=igw-08e50137164614c97]
+aws_route.internet: Creating...
+aws_route.internet: Creation complete after 0s [id=r-rtb-0171bbdf857ab9ebe1080289494]
+aws_security_group.application: Creation complete after 2s [id=sg-080b78bae997fd069]
+aws_subnet.public: Still creating... [00m10s elapsed]
+aws_subnet.public: Creation complete after 11s [id=subnet-04313b22ffc086dce]
+aws_route_table_association.public: Creating...
+aws_route_table_association.public: Creation complete after 0s [id=rtbassoc-0b6008d8769894100]
+
+Apply complete! Resources: 8 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+ecr_repository_url = "330599755815.dkr.ecr.ap-south-1.amazonaws.com/claims-lab"
+public_subnet_id = "subnet-04313b22ffc086dce"
+security_group_id = "sg-080b78bae997fd069"
+vpc_id = "vpc-02556f8c77328c687"

@@ -1,0 +1,18 @@
+aws_route_table_association.public: Destroying... [id=rtbassoc-0b6008d8769894100]
+aws_route.internet: Destroying... [id=r-rtb-0171bbdf857ab9ebe1080289494]
+aws_ecr_repository.claims: Destroying... [id=claims-lab]
+aws_security_group.application: Destroying... [id=sg-080b78bae997fd069]
+aws_ecr_repository.claims: Destruction complete after 0s
+aws_route_table_association.public: Destruction complete after 0s
+aws_subnet.public: Destroying... [id=subnet-04313b22ffc086dce]
+aws_route.internet: Destruction complete after 0s
+aws_internet_gateway.claims_lab: Destroying... [id=igw-08e50137164614c97]
+aws_route_table.public: Destroying... [id=rtb-0171bbdf857ab9ebe]
+aws_security_group.application: Destruction complete after 1s
+aws_subnet.public: Destruction complete after 1s
+aws_route_table.public: Destruction complete after 1s
+aws_internet_gateway.claims_lab: Destruction complete after 1s
+aws_vpc.claims_lab: Destroying... [id=vpc-02556f8c77328c687]
+aws_vpc.claims_lab: Destruction complete after 1s
+
+Apply complete! Resources: 0 added, 0 changed, 8 destroyed.

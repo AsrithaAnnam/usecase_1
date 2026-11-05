@@ -1,0 +1,5 @@
+aws_region   = "ap-south-1"
+project_name = "claims"
+environment  = "lab"
+vpc_cidr     = "10.60.0.0/16"
+subnet_cidr  = "10.60.1.0/24"

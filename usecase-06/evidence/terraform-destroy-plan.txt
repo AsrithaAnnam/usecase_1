@@ -1,0 +1,239 @@
+aws_vpc.claims_lab: Refreshing state... [id=vpc-02556f8c77328c687]
+aws_ecr_repository.claims: Refreshing state... [id=claims-lab]
+aws_internet_gateway.claims_lab: Refreshing state... [id=igw-08e50137164614c97]
+aws_route_table.public: Refreshing state... [id=rtb-0171bbdf857ab9ebe]
+aws_subnet.public: Refreshing state... [id=subnet-04313b22ffc086dce]
+aws_security_group.application: Refreshing state... [id=sg-080b78bae997fd069]
+aws_route.internet: Refreshing state... [id=r-rtb-0171bbdf857ab9ebe1080289494]
+aws_route_table_association.public: Refreshing state... [id=rtbassoc-0b6008d8769894100]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_ecr_repository.claims will be destroyed
+  - resource "aws_ecr_repository" "claims" {
+      - arn                  = "arn:aws:ecr:ap-south-1:330599755815:repository/claims-lab" -> null
+      - id                   = "claims-lab" -> null
+      - image_tag_mutability = "IMMUTABLE" -> null
+      - name                 = "claims-lab" -> null
+      - region               = "ap-south-1" -> null
+      - registry_id          = "330599755815" -> null
+      - repository_url       = "330599755815.dkr.ecr.ap-south-1.amazonaws.com/claims-lab" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Environment" = "lab"
+          - "ManagedBy"   = "Terraform"
+          - "Project"     = "claims"
+          - "UseCase"     = "usecase-06"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = true -> null
+        }
+    }
+
+  # aws_internet_gateway.claims_lab will be destroyed
+  - resource "aws_internet_gateway" "claims_lab" {
+      - arn      = "arn:aws:ec2:ap-south-1:330599755815:internet-gateway/igw-08e50137164614c97" -> null
+      - id       = "igw-08e50137164614c97" -> null
+      - owner_id = "330599755815" -> null
+      - region   = "ap-south-1" -> null
+      - tags     = {
+          - "Name" = "claims-lab-igw"
+        } -> null
+      - tags_all = {
+          - "Environment" = "lab"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "claims-lab-igw"
+          - "Project"     = "claims"
+          - "UseCase"     = "usecase-06"
+        } -> null
+      - vpc_id   = "vpc-02556f8c77328c687" -> null
+    }
+
+  # aws_route.internet will be destroyed
+  - resource "aws_route" "internet" {
+      - destination_cidr_block      = "0.0.0.0/0" -> null
+      - gateway_id                  = "igw-08e50137164614c97" -> null
+      - id                          = "r-rtb-0171bbdf857ab9ebe1080289494" -> null
+      - origin                      = "CreateRoute" -> null
+      - region                      = "ap-south-1" -> null
+      - route_table_id              = "rtb-0171bbdf857ab9ebe" -> null
+      - state                       = "active" -> null
+        # (14 unchanged attributes hidden)
+    }
+
+  # aws_route_table.public will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:ap-south-1:330599755815:route-table/rtb-0171bbdf857ab9ebe" -> null
+      - id               = "rtb-0171bbdf857ab9ebe" -> null
+      - owner_id         = "330599755815" -> null
+      - propagating_vgws = [] -> null
+      - region           = "ap-south-1" -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-08e50137164614c97"
+                # (12 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {
+          - "Name" = "claims-lab-public-rt"
+        } -> null
+      - tags_all         = {
+          - "Environment" = "lab"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "claims-lab-public-rt"
+          - "Project"     = "claims"
+          - "UseCase"     = "usecase-06"
+        } -> null
+      - vpc_id           = "vpc-02556f8c77328c687" -> null
+    }
+
+  # aws_route_table_association.public will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-0b6008d8769894100" -> null
+      - region         = "ap-south-1" -> null
+      - route_table_id = "rtb-0171bbdf857ab9ebe" -> null
+      - subnet_id      = "subnet-04313b22ffc086dce" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_security_group.application will be destroyed
+  - resource "aws_security_group" "application" {
+      - arn                    = "arn:aws:ec2:ap-south-1:330599755815:security-group/sg-080b78bae997fd069" -> null
+      - description            = "Security group for the Claims application lab" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow outbound traffic"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-080b78bae997fd069" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Application HTTP access"
+              - from_port        = 8080
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 8080
+            },
+        ] -> null
+      - name                   = "claims-lab-sg" -> null
+      - owner_id               = "330599755815" -> null
+      - region                 = "ap-south-1" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "claims-lab-sg"
+        } -> null
+      - tags_all               = {
+          - "Environment" = "lab"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "claims-lab-sg"
+          - "Project"     = "claims"
+          - "UseCase"     = "usecase-06"
+        } -> null
+      - vpc_id                 = "vpc-02556f8c77328c687" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_subnet.public will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:ap-south-1:330599755815:subnet/subnet-04313b22ffc086dce" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-south-1b" -> null
+      - availability_zone_id                           = "aps1-az3" -> null
+      - cidr_block                                     = "10.60.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-04313b22ffc086dce" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "330599755815" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-south-1" -> null
+      - tags                                           = {
+          - "Name" = "claims-lab-public-subnet"
+        } -> null
+      - tags_all                                       = {
+          - "Environment" = "lab"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "claims-lab-public-subnet"
+          - "Project"     = "claims"
+          - "UseCase"     = "usecase-06"
+        } -> null
+      - vpc_id                                         = "vpc-02556f8c77328c687" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_vpc.claims_lab will be destroyed
+  - resource "aws_vpc" "claims_lab" {
+      - arn                                  = "arn:aws:ec2:ap-south-1:330599755815:vpc/vpc-02556f8c77328c687" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.60.0.0/16" -> null
+      - default_network_acl_id               = "acl-0c06869257f19590f" -> null
+      - default_route_table_id               = "rtb-07623491d0d5b3433" -> null
+      - default_security_group_id            = "sg-036547002906d8b76" -> null
+      - dhcp_options_id                      = "dopt-05cd971af95d37a95" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-02556f8c77328c687" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-07623491d0d5b3433" -> null
+      - owner_id                             = "330599755815" -> null
+      - region                               = "ap-south-1" -> null
+      - tags                                 = {
+          - "Name" = "claims-lab-vpc"
+        } -> null
+      - tags_all                             = {
+          - "Environment" = "lab"
+          - "ManagedBy"   = "Terraform"
+          - "Name"        = "claims-lab-vpc"
+          - "Project"     = "claims"
+          - "UseCase"     = "usecase-06"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 8 to destroy.
+
+Changes to Outputs:
+  - ecr_repository_url = "330599755815.dkr.ecr.ap-south-1.amazonaws.com/claims-lab" -> null
+  - public_subnet_id   = "subnet-04313b22ffc086dce" -> null
+  - security_group_id  = "sg-080b78bae997fd069" -> null
+  - vpc_id             = "vpc-02556f8c77328c687" -> null
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: destroy.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "destroy.tfplan"

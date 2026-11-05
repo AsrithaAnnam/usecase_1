@@ -1,0 +1,8 @@
+aws_ecr_repository.claims
+aws_internet_gateway.claims_lab
+aws_route.internet
+aws_route_table.public
+aws_route_table_association.public
+aws_security_group.application
+aws_subnet.public
+aws_vpc.claims_lab
