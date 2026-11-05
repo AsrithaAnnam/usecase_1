@@ -1,0 +1,1 @@
+[{"deployStartedAt":"2026-11-05T06:14:30Z","deployedAt":"2026-11-05T06:14:31Z","id":0,"initiatedBy":{"automated":true},"revision":"c3c1dc92aa6763f2b7fde3b7929d0730651da800","source":{"helm":{"releaseName":"claims","valueFiles":["values-dev.yaml"]},"path":"usecase-05/helm/claims","repoURL":"https://gitlab.com/AsrithaAnnam/usecase_1.git","targetRevision":"feature/usecase-05"}}]
