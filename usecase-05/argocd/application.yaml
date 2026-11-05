@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: claims
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.com/AsrithaAnnam/usecase_1.git
+    targetRevision: feature/usecase-05
+    path: usecase-05/helm/claims
+    helm:
+      releaseName: claims
+      valueFiles:
+        - values-dev.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: claims-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
