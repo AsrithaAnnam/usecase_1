@@ -1,0 +1,7 @@
+localhost | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/home/asritha/.venvs/ansible/bin/python3.14"
+    },
+    "changed": false,
+    "ping": "pong"
+}

@@ -1,0 +1,10 @@
+[ERROR]: Task failed: Failed to connect to the host via ssh: ssh: connect to host 192.0.2.1 port 22: Connection timed out
+Origin: <adhoc 'ansible.builtin.ping' task>
+
+{'action': 'ansible.builtin.ping', 'args': {}, 'timeout': 0, 'async_val': 0, 'poll': 15}
+
+unreachable-host | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Task failed: Failed to connect to the host via ssh: ssh: connect to host 192.0.2.1 port 22: Connection timed out",
+    "unreachable": true
+}

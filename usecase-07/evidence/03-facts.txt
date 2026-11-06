@@ -1,0 +1,13 @@
+localhost | SUCCESS => {
+    "ansible_facts": {
+        "ansible_distribution": "Ubuntu",
+        "ansible_distribution_file_parsed": true,
+        "ansible_distribution_file_path": "/etc/os-release",
+        "ansible_distribution_file_variety": "Debian",
+        "ansible_distribution_major_version": "26",
+        "ansible_distribution_release": "resolute",
+        "ansible_distribution_version": "26.04",
+        "discovered_interpreter_python": "/home/asritha/.venvs/ansible/bin/python3.14"
+    },
+    "changed": false
+}

@@ -1,0 +1,19 @@
+---
+- name: Use Case 07 - Manage a local application configuration
+  hosts: lab
+  gather_facts: true
+
+  tasks:
+    - name: Create the managed application configuration
+      ansible.builtin.copy:
+        dest: /tmp/usecase07-managed.conf
+        mode: "0644"
+        content: |
+          application=claims-management
+          environment=lab
+          managed_by=ansible
+          use_case=07
+
+    - name: Confirm the managed file location
+      ansible.builtin.debug:
+        msg: "Configuration is managed at /tmp/usecase07-managed.conf"

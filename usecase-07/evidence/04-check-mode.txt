@@ -1,0 +1,25 @@
+
+PLAY [Use Case 07 - Manage a local application configuration] ******************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create the managed application configuration] ****************************
+--- before
++++ after: /tmp/usecase07-managed.conf
+@@ -0,0 +1,4 @@
++application=claims-management
++environment=lab
++managed_by=ansible
++use_case=07
+
+changed: [localhost]
+
+TASK [Confirm the managed file location] ***************************************
+ok: [localhost] => {
+    "msg": "Configuration is managed at /tmp/usecase07-managed.conf"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

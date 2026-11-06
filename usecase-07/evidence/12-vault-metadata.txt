@@ -1,0 +1,51 @@
+====== Metadata Path ======
+secret/metadata/midhlab/app
+
+========== Metadata ==========
+Key                     Value
+---                     -----
+cas_required            false
+created_time            2026-11-06T06:49:32.880427576Z
+current_version         4
+custom_metadata         <nil>
+delete_version_after    0s
+last_updated_by         map[actor:token client_id:0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8= operation:update]
+max_versions            0
+oldest_version          0
+updated_time            2026-11-06T06:50:43.91669272Z
+
+====== Version 1 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"create"}
+created_time     2026-11-06T06:49:32.880427576Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+====== Version 2 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"update"}
+created_time     2026-11-06T06:50:33.803687104Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+====== Version 3 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"update"}
+created_time     2026-11-06T06:50:34.189344301Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+====== Version 4 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"update"}
+created_time     2026-11-06T06:50:43.91669272Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
