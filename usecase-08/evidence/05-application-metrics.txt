@@ -1,0 +1,25 @@
+# HELP claims_http_requests_total Total number of HTTP requests received by the Claims backend
+# TYPE claims_http_requests_total counter
+claims_http_requests_total{endpoint="/api/health",method="GET",status="200"} 32.0
+# HELP claims_http_request_duration_seconds Duration of HTTP requests handled by the Claims backend
+# TYPE claims_http_request_duration_seconds histogram
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.005",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.01",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.025",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.05",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.075",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.1",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.25",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.5",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="0.75",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="1.0",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="2.5",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="5.0",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="7.5",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="10.0",method="GET"} 32.0
+claims_http_request_duration_seconds_bucket{endpoint="/api/health",le="+Inf",method="GET"} 32.0
+claims_http_request_duration_seconds_count{endpoint="/api/health",method="GET"} 32.0
+claims_http_request_duration_seconds_sum{endpoint="/api/health",method="GET"} 0.004117527000289556
+# HELP claims_http_request_duration_seconds_created Duration of HTTP requests handled by the Claims backend
+# TYPE claims_http_request_duration_seconds_created gauge
+claims_http_request_duration_seconds_created{endpoint="/api/health",method="GET"} 1.794035498790274e+09

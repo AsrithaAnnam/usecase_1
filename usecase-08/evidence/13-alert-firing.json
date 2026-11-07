@@ -1,0 +1,24 @@
+{
+    "status": "success",
+    "data": {
+        "alerts": [
+            {
+                "labels": {
+                    "alertname": "ClaimsBackendDown",
+                    "environment": "local",
+                    "instance": "host.docker.internal:5001",
+                    "job": "claims-backend",
+                    "service": "claims-backend",
+                    "severity": "critical"
+                },
+                "annotations": {
+                    "description": "Prometheus could not scrape the Claims backend for more than 30 seconds.",
+                    "summary": "Claims backend is unavailable"
+                },
+                "state": "firing",
+                "activeAt": "2026-11-07T11:29:20.424818186Z",
+                "value": "0e+00"
+            }
+        ]
+    }
+}
