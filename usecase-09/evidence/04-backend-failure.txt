@@ -1,0 +1,9 @@
+=== Incident time UTC ===
+2026-11-10T05:26:00Z
+=== Container status ===
+NAME                             IMAGE                                                                     COMMAND                  SERVICE    CREATED      STATUS                       PORTS
+3-tier-architecture-backend-1    sha256:0e34fba47c7c5969dd04beebeab06a3a233bfe2318710b4408ec90db1639f568   "gunicorn -w 1 -b 0.…"   backend    2 days ago   Exited (0) 4 minutes ago
+3-tier-architecture-database-1   postgres:17-alpine                                                        "docker-entrypoint.s…"   database   2 days ago   Up About an hour (healthy)   5432/tcp
+3-tier-architecture-frontend-1   sha256:f104622f0832d456d057fd56c9a37f2aa7b9a56665e080e70d5808b71f29df85   "/docker-entrypoint.…"   frontend   2 days ago   Up About an hour             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+=== Failed health check ===
+curl: (7) Failed to connect to localhost:5001 after 1 ms: Could not connect to server

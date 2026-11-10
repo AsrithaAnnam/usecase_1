@@ -1,0 +1,47 @@
+=== Verification time UTC ===
+2026-11-10T10:10:18Z
+=== Application containers ===
+NAME                             IMAGE                                                                     COMMAND                  SERVICE    CREATED      STATUS                 PORTS
+3-tier-architecture-backend-1    sha256:0e34fba47c7c5969dd04beebeab06a3a233bfe2318710b4408ec90db1639f568   "gunicorn -w 1 -b 0.…"   backend    3 days ago   Up 28 minutes          0.0.0.0:5001->5000/tcp, [::]:5001->5000/tcp
+3-tier-architecture-database-1   postgres:17-alpine                                                        "docker-entrypoint.s…"   database   3 days ago   Up 6 hours (healthy)   5432/tcp
+3-tier-architecture-frontend-1   sha256:f104622f0832d456d057fd56c9a37f2aa7b9a56665e080e70d5808b71f29df85   "/docker-entrypoint.…"   frontend   3 days ago   Up 6 hours             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+=== Backend health ===
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Tue, 10 Nov 2026 10:10:19 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 48
+Access-Control-Allow-Origin: http://localhost:8080
+
+{"service":"claims-backend","status":"healthy"}
+=== Prometheus health ===
+HTTP/1.1 200 OK
+Date: Tue, 10 Nov 2026 10:10:19 GMT
+Content-Length: 30
+Content-Type: text/plain; charset=utf-8
+
+Prometheus Server is Healthy.
+=== Loki readiness ===
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+X-Content-Type-Options: nosniff
+Date: Tue, 10 Nov 2026 10:10:19 GMT
+Content-Length: 6
+
+ready
+=== Grafana health ===
+HTTP/1.1 200 OK
+Cache-Control: no-store
+Content-Type: application/json; charset=UTF-8
+X-Content-Type-Options: nosniff
+X-Frame-Options: deny
+X-Xss-Protection: 1; mode=block
+Date: Tue, 10 Nov 2026 10:10:19 GMT
+Content-Length: 101
+
+{
+  "database": "ok",
+  "version": "13.2.4",
+  "commit": "0e79aef9d91abf3bdadae9af15763029072fb45b"
+}

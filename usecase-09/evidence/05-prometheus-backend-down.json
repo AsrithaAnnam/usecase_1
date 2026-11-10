@@ -1,0 +1,1 @@
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"up","environment":"local","instance":"host.docker.internal:5001","job":"claims-backend","service":"claims-backend"},"value":[1794301238.125,"0"]}]}}
