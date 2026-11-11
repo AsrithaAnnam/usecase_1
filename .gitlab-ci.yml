@@ -54,7 +54,7 @@ sonarqube_check:
     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}" -Dsonar.python.coverage.reportPaths=coverage.xml
   allow_failure: false
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "feature/usecase-10"'
 
 # Stage 3: Build both Docker images
 container_build:
@@ -74,7 +74,7 @@ container_build:
       - images.tar
     expire_in: 1 day
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "feature/usecase-10"'
 
 # Stage 4: Scan both images with Trivy
 container_scan:
@@ -97,7 +97,7 @@ container_scan:
       - images.tar
     expire_in: 1 day
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "feature/usecase-10"'
 
 # Stage 5: Push images only after both scans pass
 container_push:
@@ -117,9 +117,12 @@ container_push:
     - docker load -i images.tar
     - docker push "$BACKEND_IMAGE"
     - docker push "$FRONTEND_IMAGE"
-    - docker tag "$BACKEND_IMAGE" "$BACKEND_LATEST"
-    - docker tag "$FRONTEND_IMAGE" "$FRONTEND_LATEST"
-    - docker push "$BACKEND_LATEST"
-    - docker push "$FRONTEND_LATEST"
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        docker tag "$BACKEND_IMAGE" "$BACKEND_LATEST"
+        docker tag "$FRONTEND_IMAGE" "$FRONTEND_LATEST"
+        docker push "$BACKEND_LATEST"
+        docker push "$FRONTEND_LATEST"
+      fi
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "feature/usecase-10"'
