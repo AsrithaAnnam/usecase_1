@@ -1,0 +1,38 @@
+usecase_10_ci_health:
+  stage: test
+  tags:
+    - usecase-10
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "feature/usecase-10"'
+  script:
+    - |
+      set -e
+
+      echo "=== Runner Check ==="
+      whoami
+      hostname
+      pwd
+
+      echo "=== Docker Check ==="
+      docker info --format 'Docker server version: {{.ServerVersion}}'
+
+      echo "=== Disk Check ==="
+      df -h /
+
+      echo "=== Registry Connectivity ==="
+      status="$(curl -sS -o /dev/null -w '%{http_code}' \
+        --max-time 10 "https://${CI_REGISTRY}/v2/")"
+      echo "Registry HTTP status: $status"
+      case "$status" in
+        200|401) ;;
+        *) exit 1 ;;
+      esac
+
+      echo "=== Registry Login Check ==="
+      DOCKER_CONFIG="$(mktemp -d)"
+      export DOCKER_CONFIG
+      trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+      printf '%s\n' "$CI_REGISTRY_PASSWORD" |
+        docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+
+      echo "Use Case 10 CI health checks passed."
