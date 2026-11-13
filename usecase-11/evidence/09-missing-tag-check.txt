@@ -1,0 +1,94 @@
+Name:             claims-frontend-usecase11-7bf494c559-pgr6v
+Namespace:        claims-k8s-lab
+Priority:         0
+Service Account:  default
+Node:             desktop-control-plane/172.20.0.3
+Start Time:       Thu, 12 Nov 2026 18:32:16 +0530
+Labels:           app=claims-frontend-usecase11
+                  pod-template-hash=7bf494c559
+Annotations:      <none>
+Status:           Pending
+IP:               10.244.0.6
+IPs:
+  IP:           10.244.0.6
+Controlled By:  ReplicaSet/claims-frontend-usecase11-7bf494c559
+Containers:
+  frontend:
+    Container ID:   
+    Image:          registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-missing
+    Image ID:       
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       ImagePullBackOff
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mz2kg (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-mz2kg:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+Name:             claims-frontend-usecase11-7d64d958c7-7fgmm
+Namespace:        claims-k8s-lab
+Priority:         0
+Service Account:  default
+Node:             desktop-control-plane/172.20.0.3
+Start Time:       Thu, 12 Nov 2026 18:33:35 +0530
+Labels:           app=claims-frontend-usecase11
+                  pod-template-hash=7d64d958c7
+Annotations:      kubectl.kubernetes.io/restartedAt: 2026-11-12T18:33:35+05:30
+Status:           Pending
+IP:               10.244.0.7
+IPs:
+  IP:           10.244.0.7
+Controlled By:  ReplicaSet/claims-frontend-usecase11-7d64d958c7
+Containers:
+  frontend:
+    Container ID:   
+    Image:          registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-missing
+    Image ID:       
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       ImagePullBackOff
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-k4p48 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-k4p48:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s

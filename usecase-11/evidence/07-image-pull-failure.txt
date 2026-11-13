@@ -1,0 +1,55 @@
+Name:             claims-frontend-usecase11-64f94df799-ppwhk
+Namespace:        claims-k8s-lab
+Priority:         0
+Service Account:  default
+Node:             desktop-control-plane/172.20.0.3
+Start Time:       Thu, 12 Nov 2026 18:29:22 +0530
+Labels:           app=claims-frontend-usecase11
+                  pod-template-hash=64f94df799
+Annotations:      <none>
+Status:           Pending
+IP:               10.244.0.5
+IPs:
+  IP:           10.244.0.5
+Controlled By:  ReplicaSet/claims-frontend-usecase11-64f94df799
+Containers:
+  frontend:
+    Container ID:   
+    Image:          registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-missing
+    Image ID:       
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       ImagePullBackOff
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mnxxc (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-mnxxc:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                  From               Message
+  ----     ------     ----                 ----               -------
+  Normal   Scheduled  2m19s                default-scheduler  Successfully assigned claims-k8s-lab/claims-frontend-usecase11-64f94df799-ppwhk to desktop-control-plane
+  Normal   Pulling    39s (x4 over 2m18s)  kubelet            spec.containers{frontend}: Pulling image "registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-missing"
+  Warning  Failed     36s (x4 over 2m15s)  kubelet            spec.containers{frontend}: Failed to pull image "registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-missing": failed to pull and unpack image "registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-missing": failed to resolve reference "registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-missing": failed to authorize: failed to fetch anonymous token: unexpected status from GET request to https://gitlab.com/jwt/auth?scope=repository%3Aasrithaannam%2Fusecase_1%2Ffrontend%3Apull&service=container_registry: 403 Forbidden
+  Warning  Failed     36s (x4 over 2m15s)  kubelet            spec.containers{frontend}: Error: ErrImagePull
+  Normal   BackOff    11s (x7 over 2m14s)  kubelet            spec.containers{frontend}: Back-off pulling image "registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-missing"
+  Warning  Failed     11s (x7 over 2m14s)  kubelet            spec.containers{frontend}: Error: ImagePullBackOff

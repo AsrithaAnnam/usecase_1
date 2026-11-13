@@ -1,0 +1,53 @@
+Name:             claims-frontend-usecase11-6bf64544b6-xn2cg
+Namespace:        claims-k8s-lab
+Priority:         0
+Service Account:  default
+Node:             desktop-control-plane/172.20.0.5
+Start Time:       Fri, 13 Nov 2026 10:54:28 +0530
+Labels:           app=claims-frontend-usecase11
+                  pod-template-hash=6bf64544b6
+Annotations:      kubectl.kubernetes.io/restartedAt: 2026-11-13T10:54:28+05:30
+Status:           Running
+IP:               10.244.0.8
+IPs:
+  IP:           10.244.0.8
+Controlled By:  ReplicaSet/claims-frontend-usecase11-6bf64544b6
+Containers:
+  frontend:
+    Container ID:   containerd://d803e4e6a41567da05aed873eb16a694af9ceaae24e3d1c9008d7512d925ce67
+    Image:          registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-good
+    Image ID:       registry.gitlab.com/asrithaannam/usecase_1/frontend@sha256:3b5045d947bd72859e96af6f0ec59ee485e7dfce632ea76d00a9facada08fa74
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Fri, 13 Nov 2026 10:54:29 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-8g7td (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-8g7td:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  67s   default-scheduler  Successfully assigned claims-k8s-lab/claims-frontend-usecase11-6bf64544b6-xn2cg to desktop-control-plane
+  Normal  Pulled     66s   kubelet            spec.containers{frontend}: Container image "registry.gitlab.com/asrithaannam/usecase_1/frontend:usecase-11-good" already present on machine and can be accessed by the pod
+  Normal  Created    66s   kubelet            spec.containers{frontend}: Container created
+  Normal  Started    66s   kubelet            spec.containers{frontend}: Container started
