@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Sat, 14 Nov 2026 06:20:38 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 48
+Access-Control-Allow-Origin: http://localhost:8080
+
+{"service":"claims-backend","status":"healthy"}

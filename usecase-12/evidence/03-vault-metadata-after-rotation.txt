@@ -1,0 +1,33 @@
+========= Metadata Path =========
+secret/metadata/midhlab/usecase12
+
+========== Metadata ==========
+Key                     Value
+---                     -----
+cas_required            false
+created_time            2026-11-13T12:28:42.118196063Z
+current_version         2
+custom_metadata         <nil>
+delete_version_after    0s
+last_updated_by         map[actor:root client_id:0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8= operation:update]
+max_versions            0
+oldest_version          0
+updated_time            2026-11-13T12:44:42.001168049Z
+
+====== Version 1 ======
+Key              Value
+---              -----
+created_by       {"actor":"root","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"create"}
+created_time     2026-11-13T12:28:42.118196063Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+====== Version 2 ======
+Key              Value
+---              -----
+created_by       {"actor":"root","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"update"}
+created_time     2026-11-13T12:44:42.001168049Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
