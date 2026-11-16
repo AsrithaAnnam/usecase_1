@@ -1,0 +1,9 @@
+=== Use Case 13 final verification ===
+feature/usecase-13
+PASS - Conftest reported four missing resource fields and the Deployment was absent.
+PASS - The corrected Deployment passed all four resource checks.
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+usecase13-policy-demo   1/1     1            1           6m14s
+NAME                                     READY   STATUS    RESTARTS   AGE
+usecase13-policy-demo-6897785ff9-sdwjk   1/1     Running   0          6m14s
+HTTP/1.1 200 OK

@@ -1,0 +1,19 @@
+diff --git a/usecase-13/manifests/unsafe-deployment.yaml b/usecase-13/manifests/fixed-deployment.yaml
+index 32fcb03..69aedac 100644
+--- a/usecase-13/manifests/unsafe-deployment.yaml
++++ b/usecase-13/manifests/fixed-deployment.yaml
+@@ -20,4 +20,11 @@ spec:
+           image: nginx:1.27-alpine
+           ports:
+             - name: http
+-              containerPort: 80
+\ No newline at end of file
++              containerPort: 80
++          resources:
++            requests:
++              cpu: 50m
++              memory: 32Mi
++            limits:
++              cpu: 200m
++              memory: 128Mi
+\ No newline at end of file

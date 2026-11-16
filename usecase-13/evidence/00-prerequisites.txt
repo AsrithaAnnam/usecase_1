@@ -1,0 +1,17 @@
+=== Current directory ===
+C:\Users\Dell\OneDrive - Midhtechnologies\Desktop\3-Tier-Architecture-recovered
+=== Current branch ===
+feature/usecase-13
+=== Git status ===
+?? builds/
+?? usecase-13/
+=== Kubernetes context ===
+docker-desktop
+=== Lab namespace ===
+NAME             STATUS   AGE
+claims-k8s-lab   Active   3d18h
+=== Deployment permission ===
+yes
+=== Conftest version ===
+Conftest: 0.71.1
+OPA: 1.21.1

@@ -1,0 +1,2 @@
+NAME                                     READY   STATUS    RESTARTS   AGE   IP           NODE                    NOMINATED NODE   READINESS GATES
+usecase13-policy-demo-6897785ff9-sdwjk   1/1     Running   0          52s   10.244.0.8   desktop-control-plane   <none>           <none>

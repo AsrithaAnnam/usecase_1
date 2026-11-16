@@ -1,0 +1,50 @@
+feature/usecase-13
+\# Use Case 13 Policy Selection
+
+
+
+\## Selected rule
+
+
+
+Every container in the Deployment's containers list must define:
+
+
+
+\- CPU request
+
+\- Memory request
+
+\- CPU limit
+
+\- Memory limit
+
+
+
+\## Why this rule is needed
+
+
+
+Requests help Kubernetes schedule Pods. Limits reduce the risk that
+
+one container uses resources needed by other workloads.
+
+
+
+\## Enforcement boundary
+
+
+
+Conftest checks the manifest before deployment. The check can run locally
+
+or in CI. In this lab, we run it locally before applying the manifest.
+
+
+
+\## Expected behavior
+
+
+
+The unsafe manifest fails with four messages, one for each missing
+
+field. The corrected manifest passes and is the only one deployed.

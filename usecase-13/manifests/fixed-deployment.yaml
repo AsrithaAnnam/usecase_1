@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usecase13-policy-demo
+  namespace: claims-k8s-lab
+  labels:
+    app: usecase13-policy-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: usecase13-policy-demo
+  template:
+    metadata:
+      labels:
+        app: usecase13-policy-demo
+    spec:
+      containers:
+        - name: policy-demo
+          image: nginx:1.27-alpine
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

@@ -1,0 +1,6 @@
+[31mFAIL[0m - usecase-13/manifests/unsafe-deployment.yaml - main - Container "policy-demo" must define resources.limits.cpu
+[31mFAIL[0m - usecase-13/manifests/unsafe-deployment.yaml - main - Container "policy-demo" must define resources.limits.memory
+[31mFAIL[0m - usecase-13/manifests/unsafe-deployment.yaml - main - Container "policy-demo" must define resources.requests.cpu
+[31mFAIL[0m - usecase-13/manifests/unsafe-deployment.yaml - main - Container "policy-demo" must define resources.requests.memory
+
+[31m4 tests, 0 passed, 0 warnings, 4 failures, 0 exceptions[0m

@@ -1,0 +1,2 @@
+CONTAINER     CPU_REQUEST   MEMORY_REQUEST   CPU_LIMIT   MEMORY_LIMIT
+policy-demo   50m           32Mi             200m        128Mi

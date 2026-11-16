@@ -1,0 +1,1 @@
+PASS - Conftest reported four missing resource fields and the Deployment was absent.

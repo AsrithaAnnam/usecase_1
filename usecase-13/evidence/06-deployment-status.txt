@@ -1,0 +1,2 @@
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS    IMAGES              SELECTOR
+usecase13-policy-demo   1/1     1            1           52s   policy-demo   nginx:1.27-alpine   app=usecase13-policy-demo
