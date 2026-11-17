@@ -1,0 +1,2 @@
+spec:
+  selector: {app: usecase14-demo, version: blue}

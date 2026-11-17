@@ -1,0 +1,2 @@
+configmap/usecase14-green-content created
+deployment.apps/usecase14-green created

@@ -1,0 +1,2 @@
+    Readiness:    http-get http://:80/deliberately-unhealthy delay=2s timeout=1s period=3s #success=1 #failure=2
+  Warning  Unhealthy  1s (x6 over 16s)  kubelet            spec.containers{web}: Readiness probe failed: HTTP probe failed with statuscode: 404

@@ -1,0 +1,3 @@
+configmap/usecase14-blue-content created
+deployment.apps/usecase14-blue created
+service/usecase14-service created

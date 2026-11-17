@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: usecase14-green-preview
+  namespace: claims-k8s-lab
+spec:
+  selector: {app: usecase14-demo, version: green}
+  ports:
+    - {name: http, port: 80, targetPort: 80}

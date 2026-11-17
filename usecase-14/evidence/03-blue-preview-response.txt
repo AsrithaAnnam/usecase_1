@@ -1,0 +1,5 @@
+<h1>BLUE Version 1</h1>
+<p>Stable release</p>
+
+HTTP status: 200
+Response time: 0.015506 seconds
