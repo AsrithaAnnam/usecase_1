@@ -1,0 +1,22 @@
+app:
+  name: usecase15-demo
+
+image:
+  reference: nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+
+replicaCount: 1
+environment: common
+secretName: placeholder-secret
+approvalRequired: false
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 32Mi
+  limits:
+    cpu: 100m
+    memory: 64Mi

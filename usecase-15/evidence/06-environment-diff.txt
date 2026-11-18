@@ -1,0 +1,61 @@
+Comparing files USECASE-15\EVIDENCE\06-rendered-dev.yaml and USECASE-15\EVIDENCE\06-RENDERED-STAGE.YAML
+***** USECASE-15\EVIDENCE\06-rendered-dev.yaml
+   22:      app: usecase15-demo
+   23:      environment: dev
+   24:  spec:
+   25:    replicas: 1
+   26:    selector:
+***** USECASE-15\EVIDENCE\06-RENDERED-STAGE.YAML
+   22:      app: usecase15-demo
+   23:      environment: stage
+   24:  spec:
+   25:    replicas: 2
+   26:    selector:
+*****
+
+***** USECASE-15\EVIDENCE\06-rendered-dev.yaml
+   32:          app: usecase15-demo
+   33:          environment: dev
+   34:      spec:
+***** USECASE-15\EVIDENCE\06-RENDERED-STAGE.YAML
+   32:          app: usecase15-demo
+   33:          environment: stage
+   34:      spec:
+*****
+
+***** USECASE-15\EVIDENCE\06-rendered-dev.yaml
+   43:              - name: APP_ENV
+   44:                value: "dev"
+   45:              - name: API_TOKEN
+***** USECASE-15\EVIDENCE\06-RENDERED-STAGE.YAML
+   43:              - name: APP_ENV
+   44:                value: "stage"
+   45:              - name: API_TOKEN
+*****
+
+***** USECASE-15\EVIDENCE\06-rendered-dev.yaml
+   47:                  secretKeyRef:
+   48:                    name: claims-dev-secret
+   49:                    key: API_TOKEN
+***** USECASE-15\EVIDENCE\06-RENDERED-STAGE.YAML
+   47:                  secretKeyRef:
+   48:                    name: claims-stage-secret
+   49:                    key: API_TOKEN
+*****
+
+***** USECASE-15\EVIDENCE\06-rendered-dev.yaml
+   57:              limits:
+   58:                cpu: 100m
+   59:                memory: 64Mi
+   60:              requests:
+   61:                cpu: 25m
+   62:                memory: 32Mi
+***** USECASE-15\EVIDENCE\06-RENDERED-STAGE.YAML
+   57:              limits:
+   58:                cpu: 250m
+   59:                memory: 256Mi
+   60:              requests:
+   61:                cpu: 100m
+   62:                memory: 128Mi
+*****
+

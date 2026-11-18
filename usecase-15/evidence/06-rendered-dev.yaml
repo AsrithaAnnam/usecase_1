@@ -1,0 +1,62 @@
+---
+# Source: usecase15-promotion/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: usecase15-demo
+spec:
+  selector:
+    app: usecase15-demo
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+
+---
+# Source: usecase15-promotion/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usecase15-demo
+  labels:
+    app: usecase15-demo
+    environment: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: usecase15-demo
+  template:
+    metadata:
+      labels:
+        app: usecase15-demo
+        environment: dev
+    spec:
+      containers:
+        - name: web
+          image: "nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: APP_ENV
+              value: "dev"
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: claims-dev-secret
+                  key: API_TOKEN
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 3
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 25m
+              memory: 32Mi

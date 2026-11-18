@@ -1,0 +1,11 @@
+environment: qa
+replicaCount: 1
+secretName: claims-qa-secret
+approvalRequired: false
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 150m
+    memory: 128Mi

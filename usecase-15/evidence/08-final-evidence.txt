@@ -1,0 +1,52 @@
+USE CASE 15 - FINAL EVIDENCE
+
+=== Current branch ===
+feature/usecase-15
+
+=== Environment matrix ===
+# Use Case 15 Environment Matrix
+
+| Setting | Dev | QA | Stage | Prod-like |
+|---|---|---|---|---|
+| Namespace | claims-dev | claims-qa | claims-stage | claims-prod |
+| Replicas | 1 | 1 | 2 | 3 |
+| Image | Same digest | Same digest | Same digest | Same digest |
+| Secret name | claims-dev-secret | claims-qa-secret | claims-stage-secret | claims-prod-secret |
+| Approval | No | No | Required | Required |
+| CPU request | 25m | 50m | 100m | 200m |
+| Memory request | 32Mi | 64Mi | 128Mi | 256Mi |
+| Monitoring | Basic | Test alerts | Production-like | Full |
+| Rollback | helm rollback | helm rollback | helm rollback | helm rollback |
+
+## Promotion flow
+
+Development -> QA -> Stage -> Production
+
+The image is built once and promoted by immutable digest.
+
+=== Dev workloads ===
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/usecase15-demo   1/1     1            1           5m57s
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/usecase15-demo-56c6cd77fd-m4jzz   1/1     Running   0          5m57s
+
+=== Stage workloads after rollback ===
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/usecase15-demo   2/2     2            2           3m39s
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/usecase15-demo-7596cc5b7b-tn42q   1/1     Running   0          3m39s
+pod/usecase15-demo-7596cc5b7b-wzv94   1/1     Running   0          87s
+
+=== Deployed image references ===
+DEV_IMAGE
+nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+STAGE_IMAGE
+nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+
+=== Helm releases ===
+NAME         	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART                    	APP VERSION
+usecase15-dev	claims-dev	1       	2026-11-18 18:10:43.468481 +0530 IST	deployed	usecase15-promotion-0.1.0	1.0        
+NAME           	NAMESPACE   	REVISION	UPDATED                              	STATUS  	CHART                    	APP VERSION
+usecase15-stage	claims-stage	3       	2026-11-18 18:15:14.0656755 +0530 IST	deployed	usecase15-promotion-0.1.0	1.0        

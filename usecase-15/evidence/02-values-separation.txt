@@ -1,0 +1,51 @@
+STEP 2: COMMON AND ENVIRONMENT-SPECIFIC VALUES
+
+=== Common values ===
+app:
+  name: usecase15-demo
+
+image:
+  reference: nginx:1.27-alpine
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+
+replicaCount: 1
+environment: common
+secretName: placeholder-secret
+approvalRequired: false
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 32Mi
+  limits:
+    cpu: 100m
+    memory: 64Mi
+
+=== Dev values ===
+environment: dev
+replicaCount: 1
+secretName: claims-dev-secret
+approvalRequired: false
+resources:
+  requests:
+    cpu: 25m
+    memory: 32Mi
+  limits:
+    cpu: 100m
+    memory: 64Mi
+
+=== Stage values ===
+environment: stage
+replicaCount: 2
+secretName: claims-stage-secret
+approvalRequired: true
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi

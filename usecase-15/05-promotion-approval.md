@@ -1,0 +1,14 @@
+# Stage Promotion Approval
+
+Environment: Stage
+Source environment: Dev
+Approved image: nginx@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+
+- Dev rollout succeeded and the Pod was 1/1 Ready.
+- The Dev Service returned HTTP/1.1 200 OK.
+- The live Dev image matched the rendered Stage image.
+- Stage values and Secret references were reviewed.
+
+Approval status: APPROVED FOR LAB
+Approved by: Lab operator
+Rollback method: helm rollback usecase15-stage <REVISION> -n claims-stage
